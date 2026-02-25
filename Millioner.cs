@@ -358,7 +358,7 @@ public sealed class GameForm : Form
         b.Text = $"{letter}: {text}";
     }
 
-    private bool CanUseFifty() => _currentStep % 5 == 0;
+    private bool CanUseFifty() => _fiftyLastUsedStep == 0 || (_currentStep - _fiftyLastUsedStep) >= 5;
 
     private void ResetStepUi()
     {
@@ -377,12 +377,11 @@ public sealed class GameForm : Form
         _audienceBtn.Visible = !_audienceUsedGlobal;
         _audienceBtn.Enabled = !_audienceUsedGlobal;
 
-        var fiftyReadyByStepRule = CanUseFifty();
-        var fiftyCooldownReady = _fiftyLastUsedStep == 0 || (_currentStep - _fiftyLastUsedStep) >= 5;
-        var fiftyAllowed = fiftyReadyByStepRule && fiftyCooldownReady;
+        var fiftyAllowed = CanUseFifty();
+        var stepsLeft = _fiftyLastUsedStep == 0 ? 0 : Math.Max(0, 5 - (_currentStep - _fiftyLastUsedStep));
         _fiftyBtn.Visible = true;
         _fiftyBtn.Enabled = fiftyAllowed;
-        _fiftyBtn.Text = fiftyAllowed ? "50/50" : (_fiftyLastUsedStep == 0 ? "50/50 (шаг 5/10/15)" : $"50/50 (доступно с шага {_fiftyLastUsedStep + 5})");
+        _fiftyBtn.Text = fiftyAllowed ? "50/50" : $"50/50 (кд: {stepsLeft})";
         _fiftyBtn.BackColor = fiftyAllowed ? SystemColors.Control : Color.LightGray;
     }
 
@@ -486,7 +485,6 @@ public sealed class GameForm : Form
     {
         if (_question is null) return;
         if (!CanUseFifty()) return;
-        if (!(_fiftyLastUsedStep == 0 || (_currentStep - _fiftyLastUsedStep) >= 5)) return;
 
         _fiftyUsedGlobal = true;
         _step5050Used = true;
@@ -494,7 +492,7 @@ public sealed class GameForm : Form
         _fiftyBtn.Enabled = false;
         _fiftyBtn.Visible = true;
         _fiftyBtn.BackColor = Color.LightGray;
-        _fiftyBtn.Text = $"50/50 (доступно с шага {_fiftyLastUsedStep + 5})";
+        _fiftyBtn.Text = "50/50 (кд: 5)";
 
         var wrong = new List<char> { 'A', 'B', 'C', 'D' };
         wrong.Remove(_question.CorrectAnswer);
