@@ -13,9 +13,9 @@ public static class Theme
     public static Font FontBold { get; private set; } = new("Segoe UI", 11f, FontStyle.Bold);
     public static Font FontTitle { get; private set; } = new("Segoe UI", 26f, FontStyle.Bold);
 
-    public static readonly Color GradientTop = Color.FromArgb(21, 33, 72);
-    public static readonly Color GradientMid = Color.FromArgb(58, 39, 118);
-    public static readonly Color GradientBottom = Color.FromArgb(88, 58, 140);
+    public static readonly Color GradientTop = Color.White;
+    public static readonly Color GradientMid = Color.White;
+    public static readonly Color GradientBottom = Color.White;
 
     public static void Init()
     {
@@ -89,7 +89,7 @@ public static class Theme
         }
     }
 
-    public static Color CardColor => Color.FromArgb(235, 255, 255, 255);
+    public static Color CardColor => Color.White;
 }
 
 public class BackgroundGradientPanel : Panel
@@ -121,32 +121,7 @@ public class BackgroundGradientPanel : Panel
         {
             _cache = new Bitmap(Width, Height);
             using var g = Graphics.FromImage(_cache);
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.CompositingQuality = CompositingQuality.HighQuality;
-
-            var rect = new Rectangle(0, 0, Width, Height);
-            using var brush = new LinearGradientBrush(rect, Theme.GradientTop, Theme.GradientBottom, 90f);
-            var blend = new ColorBlend
-            {
-                Colors = [Theme.GradientTop, Theme.GradientMid, Theme.GradientBottom],
-                Positions = [0f, 0.58f, 1f]
-            };
-            brush.InterpolationColors = blend;
-            g.FillRectangle(brush, rect);
-
-            using var diag = new LinearGradientBrush(rect, Color.FromArgb(60, 255, 120, 190), Color.FromArgb(10, 20, 30, 90), 35f);
-            g.FillRectangle(diag, rect);
-
-            using var vignette = new PathGradientBrush(new[]
-            {
-                new PointF(0, 0), new PointF(Width, 0), new PointF(Width, Height), new PointF(0, Height)
-            })
-            {
-                CenterPoint = new PointF(Width / 2f, Height / 2f),
-                CenterColor = Color.FromArgb(0, 0, 0, 0),
-                SurroundColors = [Color.FromArgb(75, 0, 0, 0), Color.FromArgb(75, 0, 0, 0), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(75, 0, 0, 0)]
-            };
-            g.FillRectangle(vignette, rect);
+            g.Clear(Color.White);
         }
 
         e.Graphics.DrawImageUnscaled(_cache, Point.Empty);
