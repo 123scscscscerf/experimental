@@ -716,7 +716,7 @@ public sealed class DlcForm : Form
         row.Controls.Add(url);
         row.Controls.Add(installUrl);
 
-        _list.BackColor = Theme.CardColor;
+        _list.BackColor = Color.White;
         root.Controls.Add(_list, 0, 0);
         root.Controls.Add(row, 0, 1);
         root.Controls.Add(installFile, 0, 2);
@@ -749,7 +749,7 @@ public sealed class HistoryForm : Form
 
         var bg = new BackgroundGradientPanel();
         var card = new Panel { Dock = DockStyle.Fill, Padding = new Padding(14), BackColor = Color.Transparent };
-        var list = new ListBox { Dock = DockStyle.Fill, Font = Theme.FontRegular, BackColor = Theme.CardColor };
+        var list = new ListBox { Dock = DockStyle.Fill, Font = Theme.FontRegular, BackColor = Color.White };
         var rows = Content.GetRecentSessions(20);
         foreach (var r in rows)
         {
