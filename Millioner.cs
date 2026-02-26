@@ -64,15 +64,8 @@ public sealed class MainMenuForm : Form
     {
         var panel = new Panel { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), BackColor = Theme.CardColor };
         var picture = new PictureBox { Dock = DockStyle.Fill, SizeMode = PictureBoxSizeMode.Zoom, BackColor = Color.White };
-        var paths = new[]
-        {
-            Path.Combine(Content.AppDataDir, "richman.png"),
-            Path.Combine(Content.AppDataDir, "richman_texture.png"),
-            Path.Combine(Content.AppDataDir, "millioner_texture.png")
-        };
-
-        var imagePath = paths.FirstOrDefault(File.Exists);
-        if (imagePath is not null)
+        var imagePath = Path.Combine(AppContext.BaseDirectory, "richman.png");
+        if (File.Exists(imagePath))
         {
             picture.Image = LoadImageUnlocked(imagePath);
             panel.Controls.Add(picture);
@@ -83,7 +76,7 @@ public sealed class MainMenuForm : Form
             {
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Text = "Положите PNG 1024x1536\nв %AppData%/Millioner:\nrichman.png",
+                Text = "Положите PNG 1024x1536\nрядом с приложением:\n./richman.png",
                 ForeColor = Color.Gray,
                 Font = new Font("Segoe UI", 10, FontStyle.Regular)
             });
